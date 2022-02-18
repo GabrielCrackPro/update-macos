@@ -87,7 +87,7 @@ const main = async () => {
             console.log("⭐️ Updating NodeJS...");
             execSync("npm update node");
             console.log("⭐️ NodeJS updated.");
-            log("⭐️ Updating NPM...");
+            console.log("⭐️ Updating NPM...");
             execSync("npm update");
           }
         });
