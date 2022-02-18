@@ -1,7 +1,9 @@
 {
   "name": "update-macos",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
+  "bin": "index.js",
+  "command": "update-macos",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/GabrielCrackPro/update-macos/issues"
   },
-  "homepage": "https://github.com/GabrielCrackPro/update-macos#readme"
+  "homepage": "https://github.com/GabrielCrackPro/update-macos#readme",
+  "dependencies": {
+    "inquirer": "^8.2.0"
+  }
 }
