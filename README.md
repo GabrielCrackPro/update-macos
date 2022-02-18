@@ -6,18 +6,18 @@ A script to update system and apps
 
 ## Install
 
-´´´bash
+<code>
 npm install -g update-macos
-´´´
+</code>
 
 ## Run without installing
 
-´´´bash
+<code>
 npx update-macos
-´´´
+</code>
 
 ## Usage
 
-´´´bash
+<code>
 update-macos
-´´´
+</code>
