@@ -16,7 +16,7 @@ const main = async () => {
     console.log("\n💻 Updating system...");
     execSync("sudo softwareupdate -i -a");
     if (isInstalled("/opt/homebrew/", "homebrew")) {
-      console.log("\n🍺 Updating homebrew...");
+      console.log("\n\n🍺 Updating homebrew...");
       execSync("brew update");
       console.log("\n🍺 Updating homebrew packages...");
       execSync("brew upgrade");
@@ -117,16 +117,16 @@ const main = async () => {
         });
     }
   } else {
-    console.log("Sorry, this script only works on MacOS.");
+    console.log("🚨🚫 Sorry, this script only works on MacOS. 🚨🚫");
     process.exit(1);
   }
 
   function isInstalled(path, name) {
     if (fs.existsSync(path)) {
-      console.log(`${name} is installed.`);
+      console.log(`🍺 ${name} is installed.`);
       return true;
     } else {
-      console.log(`${name} is not installed.`);
+      console.log(`🚨🚫 ${name} is not installed 🚫🚨`);
       return false;
     }
   }
