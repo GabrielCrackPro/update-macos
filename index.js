@@ -91,6 +91,30 @@ const main = async () => {
             execSync("npm update");
           }
         });
+      await inquirer
+        .prompt({
+          type: "confirm",
+          name: "updateAppsStore",
+          message: "💻 Do you want to update App Store apps?",
+          default: false,
+        })
+        .then((answer) => {
+          if (answer.updateAppsStore) {
+            if (isInstalled("/opt/homebrew/bin/mas", "mas")) {
+              console.log("💻 Updating App Store apps...");
+              execSync("mas upgrade");
+              console.log("💻 App Store apps updated.");
+            } else {
+              console.log("🚫 mas module not found 🚫");
+              console.log("🌎 Downloading mas module...");
+              execSync("brew install mas");
+              wait(1000);
+              console.log("💻 Updating App Store apps...");
+              execSync("mas upgrade");
+              console.log("\n💻 App Store apps updated.");
+            }
+          }
+        });
       console.log("\n💻 System updated.");
       process.exit(0);
     } else {
