@@ -21,3 +21,19 @@ npx update-macos
 <code>
 update-macos
 </code>
+
+## What it does?
+
+### Updates
+
+- System using <code>softwareupdate</code> command
+- Homebrew packages using [Homebrew](https://brew.sh/)
+- Node packages using <code>npm upgrade</code> command
+- Mac App Store apps using [mas](https://github.com/mas-cli/mas) command
+
+### Cleanup
+
+- Homebrew packages using [Homebrew](https://brew.sh/)
+- .DS_Store files using <a href="https://github.com/GabrielCrackPro/Setup/blob/main/Scripts/delete-dsstore.py">this custom script</a>
+
+## More things to come...
