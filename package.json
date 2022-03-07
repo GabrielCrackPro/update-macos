@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/GabrielCrackPro/update-macos#readme",
   "dependencies": {
-    "inquirer": "^8.2.0"
+    "inquirer": "^8.2.0",
+    "update-notifier": "^5.1.0"
   }
 }
