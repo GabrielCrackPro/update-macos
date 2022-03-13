@@ -31,8 +31,14 @@ const commands = {
 };
 
 const paths = {
-  homebrew: "/opt/homebrew/",
-  mas: "/opt/homebrew/bin/mas",
+  homebrew: {
+    name: "Homebrew",
+    path: "/opt/homebrew/",
+  },
+  mas: {
+    name: "mas",
+    path: "/opt/homebrew/bin/mas",
+  },
 };
 
 const platform = os.platform();
@@ -46,7 +52,7 @@ const main = async () => {
   if (platform === "darwin") {
     console.log("\n💻 Updating system...");
     execSync(commands.update.system);
-    if (isInstalled("/opt/homebrew/", "homebrew")) {
+    if (isInstalled(paths.homebrew.path, paths.homebrew.name)) {
       console.log("\n\n🍺 Updating homebrew...");
       execSync(commands.update.homebrew);
       console.log("\n🍺 Updating homebrew packages...");
@@ -129,7 +135,7 @@ const main = async () => {
         })
         .then((answer) => {
           if (answer.updateAppsStore) {
-            if (isInstalled("/opt/homebrew/bin/mas", "mas")) {
+            if (isInstalled(paths.mas.path, paths.mas.name)) {
               console.log("💻 Updating App Store apps...");
               execSync(commands.update.storeApps);
               console.log("💻 App Store apps updated.");
