@@ -7,24 +7,50 @@ const { execSync } = require("child_process");
 const updateNotifier = require("update-notifier");
 const pkg = require("./package.json");
 
-updateNotifier({ pkg }).notify();
+const commands = {
+  install: {
+    homebrew:
+      '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
+    mas: "brew install mas",
+    DsStoreDeleter:
+      "wget -q https://raw.githubusercontent.com/GabrielCrackPro/Setup/main/Scripts/delete-dsstore.py",
+  },
+  update: {
+    system: "sudo softwareupdate -i -a",
+    homebrew: "brew update",
+    homebrewPackages: "brew upgrade",
+    npm: "npm update -g",
+    node: "npm update -g node",
+    storeApps: "mas upgrade",
+  },
+  cleanup: {
+    homebrewCaches: "brew cleanup",
+    DNS: "sudo killall -HUP mDNSResponder",
+    DSstore: "python ./deletedsstore.py",
+  },
+};
+
+const paths = {
+  homebrew: "/opt/homebrew/",
+  mas: "/opt/homebrew/bin/mas",
+};
 
 const platform = os.platform();
 
 const main = async () => {
+  updateNotifier({ pkg }).notify();
   console.log("💻 Checking your system...");
   await wait(1000);
   console.log("\n💻 Your system is: " + platform);
 
   if (platform === "darwin") {
-    console.log("\n💻 System update script");
     console.log("\n💻 Updating system...");
-    execSync("sudo softwareupdate -i -a");
+    execSync(commands.update.system);
     if (isInstalled("/opt/homebrew/", "homebrew")) {
       console.log("\n\n🍺 Updating homebrew...");
-      execSync("brew update");
+      execSync(commands.update.homebrew);
       console.log("\n🍺 Updating homebrew packages...");
-      execSync("brew upgrade");
+      execSync(commands.update.homebrewPackages);
       await inquirer
         .prompt({
           type: "confirm",
@@ -35,7 +61,7 @@ const main = async () => {
         .then((answer) => {
           if (answer.cleanup) {
             console.log("🍺 Cleaning up homebrew cache...");
-            execSync("brew cleanup");
+            execSync(commands.cleanup.homebrewCaches);
             console.log("🍺 Homebrew cache cleaned up.");
           }
         });
@@ -50,18 +76,16 @@ const main = async () => {
           if (answer.deleteDS_Store) {
             if (fs.existsSync("./deletedsstore.py")) {
               console.log("🗑 Deleting .DS_Store files...");
-              execSync("python ./deletedsstore.py");
+              execSync(commands.cleanup.DSstore);
               wait(1000);
               console.log("\n🗑 .DS_Store files deleted.");
             } else {
               console.log("🚫 .DS_Store deleter not found 🚫");
               console.log("🌎 Downloading .DS_Store deleter...");
-              execSync(
-                "wget -q https://raw.githubusercontent.com/GabrielCrackPro/Setup/main/Scripts/delete-dsstore.py"
-              );
+              execSync(commands.install.DsStoreDeleter);
               wait(1000);
               console.log("🗑 Deleting .DS_Store files...");
-              execSync("python delete-dsstore.py");
+              execSync(commands.cleanup.DSstore);
               wait(1000);
               console.log("\n 🗑.DS_Store files deleted.");
             }
@@ -77,7 +101,7 @@ const main = async () => {
         .then((answer) => {
           if (answer.cleanDNS) {
             console.log("🚀 Cleaning DNS Cache...");
-            execSync("sudo killall -HUP mDNSResponder");
+            execSync(commands.cleanup.DNS);
           }
         });
       await inquirer
@@ -90,10 +114,10 @@ const main = async () => {
         .then((answer) => {
           if (answer.updateNode) {
             console.log("⭐️ Updating NodeJS...");
-            execSync("npm update node");
+            execSync(commands.update.node);
             console.log("⭐️ NodeJS updated.");
             console.log("⭐️ Updating NPM...");
-            execSync("npm update");
+            execSync(commands.update.npm);
           }
         });
       await inquirer
@@ -107,15 +131,15 @@ const main = async () => {
           if (answer.updateAppsStore) {
             if (isInstalled("/opt/homebrew/bin/mas", "mas")) {
               console.log("💻 Updating App Store apps...");
-              execSync("mas upgrade");
+              execSync(commands.update.storeApps);
               console.log("💻 App Store apps updated.");
             } else {
               console.log("🚫 mas module not found 🚫");
               console.log("🌎 Downloading mas module...");
-              execSync("brew install mas");
+              execSync(commands.install.mas);
               wait(1000);
               console.log("💻 Updating App Store apps...");
-              execSync("mas upgrade");
+              execSync(commands.update.storeApps);
               console.log("\n💻 App Store apps updated.");
             }
           }
@@ -133,13 +157,11 @@ const main = async () => {
         .then((answers) => {
           if (answers.homebrew) {
             console.log("🍺 Installing homebrew...");
-            execSync(
-              '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
-            );
+            execSync(commands.install.homebrew);
             console.log("🍺 Updating homebrew...");
-            execSync("brew update");
+            execSync(commands.update.homebrew);
             console.log("Updating homebrew packages...");
-            execSync("brew upgrade");
+            execSync(commands.update.homebrewPackages);
           } else {
             console.log("🍺 You can install homebrew later.");
           }
