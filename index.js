@@ -7,6 +7,8 @@ const { execSync } = require("child_process");
 const updateNotifier = require("update-notifier");
 const pkg = require("./package.json");
 
+const notifier = updateNotifier({ pkg });
+
 const commands = {
   install: {
     homebrew:
@@ -44,7 +46,9 @@ const paths = {
 const platform = os.platform();
 
 const main = async () => {
-  updateNotifier({ pkg }).notify();
+  if (notifier.update) {
+    notifier.notify();
+  }
   console.log("💻 Checking your system...");
   await wait(1000);
   console.log("\n💻 Your system is: " + platform);
