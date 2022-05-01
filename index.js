@@ -27,6 +27,7 @@ const commands = {
   },
   cleanup: {
     homebrewCaches: "brew cleanup",
+    pruneAll: "brew cleanup --prune=all",
     DNS: "sudo killall -HUP mDNSResponder",
     DSstore: "python ./deletedsstore.py",
   },
@@ -72,6 +73,8 @@ const main = async () => {
           if (answer.cleanup) {
             console.log("🍺 Cleaning up homebrew cache...");
             execSync(commands.cleanup.homebrewCaches);
+            console.log("🍺 Pruning all homebrew caches...");
+            execSync(commands.cleanup.pruneAll);
             console.log("🍺 Homebrew cache cleaned up.");
           }
         });
